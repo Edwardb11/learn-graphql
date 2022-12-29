@@ -1,0 +1,28 @@
+## BY ID
+{
+    post(id:2){
+      title
+    }
+}
+
+## SEARCH ALL POST
+ {
+  posts{
+ id
+    title
+    content
+  }
+}
+
+
+##  Mutation for create post
+mutation{
+  createPost(postInput:{
+    title:"a",
+    content:"hey"
+  }) {
+    id
+    title
+    content
+  }
+}

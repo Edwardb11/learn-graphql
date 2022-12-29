@@ -10,7 +10,14 @@ export class PostsService {
     @InjectRepository(Post) private postRepository: Repository<Post>,
   ) {}
   async findAll(): Promise<Post[]> {
-    return (await this.postRepository.find()) || [];
+    return await this.postRepository.find();
+  }
+  async findProductById(id: number): Promise<Post> {
+    return await this.postRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
 
   async createPost(post: CreatePostInput): Promise<Post> {
