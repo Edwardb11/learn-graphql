@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useQuery } from "@apollo/client";
+import React from "react";
+import { CharactersQuery } from "./Query/CharactersQuery";
 
-function App() {
+const App = () => {
+  const { loading, error, data } = useQuery(CharactersQuery);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+  console.log(data);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <h1 style={{ display:"flex",justifyContent:'center'}}>Rick and Morty API GRAphQL</h1>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      {data.characters.results.map(({ id, name, status, image }) => (
+        <div key={id}>
+          <h3>{name}</h3>
+          <img width="400" height="250" alt={name} src={image} />
+          <br />
+          <b>About this location:</b>
+          <p>{status}</p>
+          <br />
+        </div>
+      ))}
     </div>
+      </>
   );
-}
+};
 
 export default App;
