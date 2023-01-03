@@ -10,7 +10,7 @@ export class PetsResolver {
 
   @Mutation(() => Pet)
   createPet(@Args('createPetInput') createPetInput: CreatePetInput) {
-    return this.petsService.create(createPetInput);
+    return this.petsService.createPet(createPetInput);
   }
 
   @Query(() => [Pet], { name: 'pets' })
