@@ -26,3 +26,22 @@ mutation{
     content
   }
 }
+
+
+#Create author
+mutation{
+  createAuthor(createAuthorInput:{
+    name:"Edward"
+  }){
+    id
+    name
+  }
+}
+
+#List author
+query{
+  authors{
+    id
+    name
+  }
+}
