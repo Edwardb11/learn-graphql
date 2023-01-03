@@ -17,8 +17,12 @@ export class PetsService {
     return await this.petsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pet`;
+  findOne(id: number): Promise<Pet> {
+    return this.petsRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
 
   update(id: number, updatePetInput: UpdatePetInput) {
