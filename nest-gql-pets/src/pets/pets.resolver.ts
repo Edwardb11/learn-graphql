@@ -9,7 +9,9 @@ export class PetsResolver {
   constructor(private petsService: PetsService) {}
 
   @Mutation(() => Pet)
-  createPet(@Args('createPetInput') createPetInput: CreatePetInput) {
+  createPet(
+    @Args('createPetInput') createPetInput: CreatePetInput,
+  ): Promise<Pet> {
     return this.petsService.createPet(createPetInput);
   }
 
