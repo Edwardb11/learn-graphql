@@ -2,14 +2,14 @@ const { gql, ApolloServer } = require("apollo-server");
 const uuidv4 = require("uuid");
 const persons = [
   {
-    name: "Edward",
+    name: "Adward",
     street: "La Vega",
     city: "La Vega",
     phone: "294829829",
     id: "jhahahh-1bnsbsb-bsbsb0011-11sbs",
   },
   {
-    name: "Edward",
+    name: "Idward",
     street: "La Vega",
     city: "La Vega",
     phone: "294829829",
@@ -23,7 +23,7 @@ const persons = [
     id: "ahhaha-1bnsbsb-bsbsb0011-11sbs",
   },
   {
-    name: "Edward",
+    name: "Ahah",
     street: "La Vega",
     city: "La Vega",
     phone: "294829829",
@@ -60,6 +60,7 @@ const typeDefs = gql`
       city: String!
       street: String!
     ): Person
+    editNumber(name: String!, phone: String!): Person
   }
 `;
 
@@ -97,6 +98,15 @@ const resolvers = {
       const person = { ...args, id: uuidv4.v4() };
       persons.push(person);
       return person;
+    },
+    editNumber: (root, args) => {
+      const personIndex = persons.findIndex((p) => p.name === args.name);
+      if (!personIndex - 1) return null;
+      const person = persons[personIndex];
+      const updatePerson = { ...person, phone: args.phone };
+      persons[personIndex] = updatePerson;
+
+      return updatePerson;
     },
   },
 };
