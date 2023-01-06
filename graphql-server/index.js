@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server");
+const { gql, ApolloServer } = require("apollo-server");
 
 const persons = [
   {
@@ -53,3 +53,11 @@ const resolvers = {
   },
 };
 
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+server.listen().then(({ url }) => {
+  console.log(`Server running ${url}`);
+});
