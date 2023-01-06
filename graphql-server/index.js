@@ -1,33 +1,33 @@
 const { gql, ApolloServer } = require("apollo-server");
-const { uuidv4 } = require("uuid");
+const uuidv4 = require("uuid");
 const persons = [
   {
+    name: "Edward",
+    street: "La Vega",
+    city: "La Vega",
+    phone: "294829829",
     id: "jhahahh-1bnsbsb-bsbsb0011-11sbs",
+  },
+  {
     name: "Edward",
     street: "La Vega",
     city: "La Vega",
     phone: "294829829",
-  },
-  {
     id: "kdkdj-1bnsbsb-bsbsb0011-11sbs",
+  },
+  {
     name: "Edward",
     street: "La Vega",
     city: "La Vega",
     phone: "294829829",
-  },
-  {
     id: "ahhaha-1bnsbsb-bsbsb0011-11sbs",
-    name: "Edward",
-    street: "La Vega",
-    city: "La Vega",
-    phone: "294829829",
   },
   {
-    id: "ahahahh-aaaaaa-asbsb0011-11sbs",
     name: "Edward",
     street: "La Vega",
     city: "La Vega",
     phone: "294829829",
+    id: "ahahahh-aaaaaa-asbsb0011-11sbs",
   },
 ];
 
@@ -65,7 +65,9 @@ const resolvers = {
     allPersons: () => persons,
     findPerson: (root, args) => {
       const { name } = args;
-      return persons.find((person) => person.name === name);
+      return (
+        persons.find((person) => person.name === name) || { name: "No found" }
+      );
     },
   },
   Person: {
@@ -78,7 +80,12 @@ const resolvers = {
   },
   Mutation: {
     addPerson: (root, args) => {
-      const person = { ...args, id: uuidv4 };
+      if (persons.find((p) => p.name === args.name)) {
+        throw new Error("Name must be unique", {
+          invalidArgs: args.name,
+        });
+      }
+      const person = { ...args, id: uuidv4.v4() };
       persons.push(person);
       return person;
     },
