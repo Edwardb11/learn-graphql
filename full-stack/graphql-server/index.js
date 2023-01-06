@@ -70,14 +70,15 @@ const resolvers = {
   Query: {
     personCount: () => persons.length,
     allPersons: async (root, args) => {
-      const { data: personFromRestApi } = await axios.get(
-        "http://localhost:3000/persons"
-      );
-      console.log(personFromRestApi);
+      // const { data: personFromRestApi } = await axios.get(
+      //   "http://localhost:3000/persons"
+      // );
+      // console.log(personFromRestApi);
       if (!args.phone) return persons;
       const byPhone = (person) =>
         args.phone === "YES" ? person.phone : !person.phone;
-      return personFromRestApi.filter(byPhone);
+      // return personFromRestApi.filter(byPhone);
+      return persons.filter(byPhone);
     },
     findPerson: (root, args) => {
       const { name } = args;
