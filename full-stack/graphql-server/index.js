@@ -39,8 +39,8 @@ const typeDefs = gql`
     NO
   }
   type Adress {
-    street: String!
     city: String!
+    street: String!
   }
   type Person {
     name: String!
