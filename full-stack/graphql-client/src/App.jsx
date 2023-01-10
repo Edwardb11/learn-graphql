@@ -17,8 +17,9 @@ function App() {
       }
     }
   `;
-  // const resulst = useQuery(ALL_PERSONS)
-  const { data, loading, error } = useQuery(ALL_PERSONS);
+  // const resulst = useQuery(ALL_PERSONS) 
+  // pollInterval cada 2000 segundo vera si hay cambios ya ctualizara
+  const { data, loading, error } = useQuery(ALL_PERSONS,{pollInterval:2000});
   if (error) return <span style="color:red">{Error}</span>;
   return (
     <>
