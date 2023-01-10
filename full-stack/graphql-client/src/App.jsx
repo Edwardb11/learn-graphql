@@ -1,28 +1,22 @@
-import { gql, useQuery } from "@apollo/client";
 import "./App.css";
 import { Persons } from "./Persons";
 import { PersonForm } from "./PersonForm";
+import { usePersons } from "./persons/use-persons";
+import { useState } from "react";
+import { Notify } from "./Notify";
 
-export const ALL_PERSONS = gql`
-   query {
-     allPersons {
-       id
-       name
-       phone
-       adress {
-         city
-         street
-       }
-     }
-   }
- `;
 function App() {
-  // const resulst = useQuery(ALL_PERSONS) 
-  // pollInterval cada 2000 segundo vera si hay cambios ya ctualizara ,{pollInterval:2000}
-  const { data, loading, error } = useQuery(ALL_PERSONS);
+  const { data, loading, error } = usePersons()
+  const [errorM,setErrorM] = useState(null)
+  const notifyError = message =>{
+    setErrorM(message)
+    setTimeout(()=>setErrorM(null),5000)
+  }
   if (error) return <span style="color:red">{Error}</span>;
   return (
     <>
+    
+    <Notify errorMessage={errorM}/>
     <div className="App">
       {loading ? (
         <h1>Loading...</h1>
@@ -33,7 +27,7 @@ function App() {
         </>
       )}
     </div>
-    <PersonForm/>
+    <PersonForm notifyError={notifyError}/>
       </>
   );
 }
