@@ -4,8 +4,8 @@ import { useEffect } from "react";
 
 export const Persons = ({ persons }) => {
   const FIND_PERSON = gql`
-    query {
-      findPerson(name: $name) {
+    query findPersonByName($nameToSearch: String!) {
+      findPerson(name: $nameToSearch) {
         id
         name
         phone
@@ -19,9 +19,9 @@ export const Persons = ({ persons }) => {
   const [getPerson, result] = useLazyQuery(FIND_PERSON);
   const [person, setPerson] = useState(null);
   const showPerson = (name) => {
-    getPerson({ variables: { name: name } });
+    getPerson({ variables: { nameToSearch: name } });
   };
-  console.log({ person });
+
   useEffect(() => {
     if (result.data) {
       setPerson(result.data.findPerson);
@@ -45,13 +45,13 @@ export const Persons = ({ persons }) => {
   return (
     <div>
       <h1>Personas</h1>
-      {persons.map((p) => (
+      {persons.map((person) => (
         <div
-          key={p.id}
+          key={person.id}
           onClick={() => {
-            showPerson(p.name);
+            showPerson(person.name);
           }}>
-          {p.name} {p.phone}
+          {person.name} {person.phone}
         </div>
       ))}
     </div>
