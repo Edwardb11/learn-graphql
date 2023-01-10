@@ -4,6 +4,7 @@ import { PersonForm } from "./PersonForm";
 import { usePersons } from "./persons/use-persons";
 import { useState } from "react";
 import { Notify } from "./Notify";
+import PhoneForm from "./PhoneForm";
 
 function App() {
   const { data, loading, error } = usePersons()
@@ -15,7 +16,7 @@ function App() {
   if (error) return <span style="color:red">{Error}</span>;
   return (
     <>
-    
+
     <Notify errorMessage={errorM}/>
     <div className="App">
       {loading ? (
@@ -28,6 +29,7 @@ function App() {
       )}
     </div>
     <PersonForm notifyError={notifyError}/>
+    <PhoneForm/>
       </>
   );
 }
