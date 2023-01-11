@@ -1,7 +1,13 @@
-const { gql, ApolloServer } = require("apollo-server");
+const { gql, ApolloServer} = require("apollo-server");
 const { default: axios } = require("axios");
 const uuidv4 = require("uuid");
-
+// Subscripcion
+const { PubSub } = require('graphql-subscriptions');
+// Subscripcion
+const pubsub = new PubSub();
+const SUBSCRIPTION_EVENT = {
+  PERSON_ADDED:'PERSON_ADDED'
+}
 const persons = [
   {
     name: "Adward",
@@ -64,6 +70,10 @@ const typeDefs = gql`
     ): Person
     editNumber(name: String!, phone: String!): Person
   }
+# Subscripcion
+  type Subscription {
+    personAdded: Person!
+  }
 `;
 
 const resolvers = {
@@ -104,6 +114,10 @@ const resolvers = {
       }
       const person = { ...args, id: uuidv4.v4() };
       persons.push(person);
+
+      // Subscripcion
+      pubsub.publish(SUBSCRIPTION_EVENT.PERSON_ADDED, { personAdded: person })
+
       return person;
     },
     editNumber: (root, args) => {
@@ -116,6 +130,12 @@ const resolvers = {
       return updatePerson;
     },
   },
+  // Subscripcion
+  Subscription: {
+    personAdded: {
+      subscribe: () => pubsub.asyncIterator(SUBSCRIPTION_EVENT.PERSON_ADDED)
+    },
+  }
 };
 
 const server = new ApolloServer({
@@ -123,6 +143,7 @@ const server = new ApolloServer({
   resolvers,
 });
 
-server.listen().then(({ url }) => {
-  console.log(`Server running ${url}`);
-});
+server.listen().then(({ url, subscriptionsUrl }) => {
+  console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
+})
